@@ -1,0 +1,34 @@
+# Ignore compiled object files
+*.o
+
+# Ignore the executable file
+Library
+Library.exe
+
+# Ignore temporary directories for objet files or builds
+obj/
+build/
+
+# Ignore dependency and debugging files
+*.d
+*.out
+
+# Ignore log files
+*.log
+
+# Ignore core dumps
+core
+
+# Ignore IDE and editor configurations
+.vscode/ # Visual Studio Code 
+.idea/   # JetBrains IDEs (e.g., CLion)
+*.swp    # Vim temporary files
+*.swo    # Vim temporary swap files
+
+# Ignore system-specific files
+.DS_Store # macOs metadata file
+Thumbs.db # Windows thumbnail cache
+
+# Ignore temporary and backup files
+*.tmp     # Temporary files
+*.bak     # Backup files
