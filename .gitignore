@@ -4,14 +4,16 @@
 # Ignore the executable file
 Library
 Library.exe
+*.exe
+*.out
+*.bin
 
-# Ignore temporary directories for objet files or builds
+# Ignore temporary directories for object files or builds
 obj/
 build/
 
 # Ignore dependency and debugging files
 *.d
-*.out
 
 # Ignore log files
 *.log
@@ -20,15 +22,21 @@ build/
 core
 
 # Ignore IDE and editor configurations
-.vscode/ # Visual Studio Code 
-.idea/   # JetBrains IDEs (e.g., CLion)
-*.swp    # Vim temporary files
-*.swo    # Vim temporary swap files
+.vscode/     # Visual Studio Code
+.idea/       # JetBrains IDEs (e.g., CLion)
+*.swp        # Vim temporary files
+*.swo        # Vim temporary swap files
 
 # Ignore system-specific files
-.DS_Store # macOs metadata file
-Thumbs.db # Windows thumbnail cache
+.DS_Store    # macOS metadata file
+Thumbs.db    # Windows thumbnail cache
 
 # Ignore temporary and backup files
-*.tmp     # Temporary files
-*.bak     # Backup files
+*.tmp        # Temporary files
+*.bak        # Backup files
+
+# Ignore CMake files (optional)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
