@@ -8,7 +8,7 @@ typedef struct Book {
     char publisher[51];
     int edition;
     int year;
-    int price;
+    double price;
     int stock_quantity;
 } Book;
 
