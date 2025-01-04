@@ -15,7 +15,7 @@
  *
  * @param width Largura da borda.
  */
-void printMenuBorder(int width)
+static void printMenuBorder(int width)
 {
     printf("|");
     for (int i = 0; i < width - 2; i++)
@@ -43,7 +43,7 @@ void printMenuBorder(int width)
  * @param numOptions Número de opções disponíveis.
  * @param width Largura do menu.
  */
-void displayMenu(const char *title, const char *option[], int numOptions, int width)
+static void displayMenu(const char *title, const char *option[], int numOptions, int width)
 {
     printMenuBorder(width);
 
@@ -71,7 +71,7 @@ void displayMenu(const char *title, const char *option[], int numOptions, int wi
  *
  * @return A opção selecionada pelo usuário, ou -1 se a entrada for inválida.
  */
-int getMenuChoice()
+static int getMenuChoice()
 {
     int choice;
     printf("Digite uma opcao:\n");
@@ -100,7 +100,7 @@ int getMenuChoice()
  *
  * @return Nenhum. A função não retorna nada.
  */
-void handleSubMenuFreeList()
+static void handleSubMenuFreeList()
 {
     const char *options[] = {
         "Sair.",
@@ -144,7 +144,7 @@ void handleSubMenuFreeList()
  *
  * @return Nenhum. A função não retorna nada.
  */
-void handleSubMenuQuantities()
+static void handleSubMenuQuantities()
 {
     const char *options[] = {
         "Sair.",
