@@ -1,17 +1,17 @@
 #ifndef TWO_THREE_TREE_H
 #define TWO_THREE_TREE_H
-
-#define LEFT_KEY 0
-#define RIGHT_KEY 1
-#define LEFT_CHILD 0
-#define MIDDLE_CHILD 1
-#define RIGHT_CHILD 2
-
 typedef struct Node {
-    int keys[2];      // 0: esquerda, 1: direita
     int nKeys;        // Número de chaves no nó
-    int dataPointer;  // Posição do livro no arquivo de dados
-    int children[3];  // Posições dos filhos no arquivo de índices (0: esquerda, 1: meio, 2: direita)
+
+    int left_key;      // Chave da esquerda
+    int right_key;     // Chave da direita
+
+    int leftBook;      // Posição do livro (dado) da esquerda
+    int rightBook;     // Posição do livro (dado) da direita
+
+    int left_child;    // Filho da esquerda
+    int middle_child;  // Filho do meio
+    int right_child;   // Filho da direita
 } Node23;
 
 // Cabeçalho do Arquivo de Índices (Árvore 2-3)

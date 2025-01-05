@@ -2,7 +2,7 @@
 #define BOOK_H
 
 typedef struct Book {
-    int code;
+    int code; // Código do livro, pode ser aproveitado para o encadeamento de registros livres.
     char title[151];
     char author[201];
     char publisher[51];
