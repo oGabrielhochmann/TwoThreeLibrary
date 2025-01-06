@@ -112,38 +112,48 @@ void createBookDataFileHeader(FILE *file) {
 }
 
 /**
- * @brief Cria um novo nó no arquivo de índices.
+ * @brief Lê o cabeçalho de um arquivo binário.
  * 
- * Esta função é responsável por criar um novo nó no arquivo de índices.
+ * Esta função é responsável por ler o cabeçalho de um arquivo binário e armazená-lo
+ * na estrutura fornecida pelo usuário.
  * 
- * @param indexFile Ponteiro para o arquivo de índices.
- * @param node Ponteiro para o nó a ser criado.
+ * @param file Ponteiro para o arquivo binário já aberto.
+ * @param header Ponteiro para a estrutura onde o cabeçalho será armazenado.
+ * @param headerSize Tamanho, em bytes, da estrutura do cabeçalho.
  * 
- * @return Posição do nó no arquivo de índices.
+ * @return 1 se o cabeçalho foi lido com sucesso, -1 em caso de erro.
  * 
- * @note O nó é criado no final do arquivo de índices.
+ * @note Certifique-se de que o arquivo já está aberto em modo de leitura binária antes de chamar esta função.
+ *       O cabeçalho será lido a partir do início do arquivo.
  */
-Node23 loadNode23(FILE *indexFile, int offset){
-    Node23 node;
+int readFileHeader(FILE *file, void *header, size_t headerSize) {
+    fseek(file, 0, SEEK_SET);
 
-    fseek(indexFile, offset, SEEK_SET);
-    fread(&node, sizeof(node), 1, indexFile);
+    if (fread(header, headerSize, 1, file) != 1) {
+        fprintf(stderr, "Erro ao ler o cabeçalho do arquivo.\n");
+        return -1; // Erro ao ler o cabeçalho
+    }
 
-    return node;
+    return 1; // Sucesso
 }
 
 /**
- * @brief Salva um nó no arquivo de índices.
+ * @brief Salva o cabeçalho de um arquivo binário.
  * 
- * Esta função é responsável por salvar um nó no arquivo de índices.
+ * Esta função é responsável por salvar o cabeçalho de um arquivo binário.
  * 
- * @param indexFile Ponteiro para o arquivo de índices.
- * @param offset Deslocamento do nó no arquivo de índices.
- * @param node Ponteiro para o nó a ser salvo.
+ * @param file Ponteiro para o arquivo binário já aberto.
+ * @param header Ponteiro para a estrutura do cabeçalho.
+ * @param headerSize Tamanho, em bytes, da estrutura do cabeçalho.
+ * 
  * 
  * @return Nenhum.
  */
-void saveNode(FILE *indexFile, int offset, Node23 *node) {
-    fseek(indexFile, offset, SEEK_SET);
-    fwrite(node, sizeof(Node23), 1, indexFile);
+void saveHeader(FILE *file, void *header, size_t headerSize)
+{
+    // Coloca o ponteiro do arquivo no início
+    fseek(file, 0, SEEK_SET);
+
+    // Escreve o cabeçalho no arquivo
+    fwrite(header, headerSize, 1, file);
 }

@@ -40,4 +40,35 @@ FILE *openFile(const char *filename, const char *mode);
  */
 int closeFile(FILE **file);
 
+/**
+ * @brief Lê o cabeçalho de um arquivo binário.
+ *
+ * Esta função é responsável por ler o cabeçalho de um arquivo binário e armazená-lo
+ * na estrutura fornecida pelo usuário.
+ *
+ * @param file Ponteiro para o arquivo binário já aberto.
+ * @param header Ponteiro para a estrutura onde o cabeçalho será armazenado.
+ * @param headerSize Tamanho, em bytes, da estrutura do cabeçalho.
+ *
+ * @return 1 se o cabeçalho foi lido com sucesso, -1 em caso de erro.
+ *
+ * @note Certifique-se de que o arquivo já está aberto em modo de leitura binária antes de chamar esta função.
+ *       O cabeçalho será lido a partir do início do arquivo.
+ */
+int readFileHeader(FILE *file, void *header, size_t headerSize);
+
+/**
+ * @brief Salva o cabeçalho de um arquivo binário.
+ *
+ * Esta função é responsável por salvar o cabeçalho de um arquivo binário.
+ *
+ * @param file Ponteiro para o arquivo binário já aberto.
+ * @param header Ponteiro para a estrutura do cabeçalho.
+ * @param headerSize Tamanho, em bytes, da estrutura do cabeçalho.
+ *
+ *
+ * @return Nenhum.
+ */
+void saveHeader(FILE *file, void *header, size_t headerSize);
+
 #endif /* FILE_MANAGER_H */
