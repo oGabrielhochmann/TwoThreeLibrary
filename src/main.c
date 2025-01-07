@@ -1,3 +1,10 @@
+/**
+ * @file main.c
+ * @author Gabriel Hochmann
+ * 
+ * @brief Contém a função principal do programa.
+ */
+
 #include "menu.h"
 #include "file_manager.h"
 

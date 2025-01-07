@@ -1,9 +1,19 @@
+/**
+ * @file file_manager.h
+ *
+ * @author Gabriel Hochmann
+ *
+ * @brief Contém funções para gerenciamento de arquivos binários.
+ *
+ * Este arquivo contém funções para abrir, ler, escrever e gerenciar espaços livres em arquivos binários.
+ *
+ * @see file_manager.c
+ */
+
 #ifndef FILE_MANAGER_H
 #define FILE_MANAGER_H
 
 #include <stdio.h>
-
-//  This includes opening, reading, writing, and managing free spaces in the binary files.
 
 /**
  * @brief Abre um arquivo no modo especificado.
@@ -39,6 +49,32 @@ FILE *openFile(const char *filename, const char *mode);
  * @note Se ocorrer um erro ao fechar o arquivo, uma mensagem de erro será exibida.
  */
 int closeFile(FILE **file);
+
+/**
+ * @brief Cria o cabeçalho do arquivo de índices.
+ *
+ * Esta função é responsável por criar o cabeçalho do arquivo de índices.
+ *
+ * @param file Ponteiro para o arquivo de índices.
+ *
+ * @return Nenhum.
+ *
+ * @note O cabeçalho do arquivo de índices é composto por três informações: a raiz da árvore, a primeira posição livre e a cabeça dos registros livres.
+ */
+void createIndexFileHeader(FILE *file);
+
+/**
+ * @brief Cria o cabeçalho do arquivo de dados.
+ *
+ * Esta função é responsável por criar o cabeçalho do arquivo de dados.
+ *
+ * @param file Ponteiro para o arquivo de dados.
+ *
+ * @return Nenhum.
+ *
+ * @note O cabeçalho do arquivo de dados é composto por duas informações: a primeira posição livre e a cabeça dos registros livres.
+ */
+void createBookDataFileHeader(FILE *file);
 
 /**
  * @brief Lê o cabeçalho de um arquivo binário.

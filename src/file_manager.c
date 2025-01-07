@@ -1,10 +1,17 @@
+/**
+ * @file file_manager.c
+ * @author Gabriel Hochmann
+ * 
+ * @brief Contém funções para gerenciamento de arquivos binários.
+ * 
+ * @see file_manager.h
+ */
+
 #include "file_manager.h"
 #include "book_data_file.h"
 #include "two_three_tree.h"
 
 #include <errno.h>
-
-//  This includes opening, reading, writing, and managing free spaces in the binary files.
 
 /**
  * @brief Abre um arquivo no modo especificado.

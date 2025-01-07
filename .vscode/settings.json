@@ -1,3 +1,6 @@
 {
-    "cSpell.enabled": false
+    "cSpell.enabled": false,
+    "files.associations": {
+        "tree_manager.h": "c"
+    }
 }

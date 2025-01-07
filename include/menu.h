@@ -1,3 +1,13 @@
+/**
+ * @file menu.h
+ * 
+ * @author Gabriel Hochmann
+ * 
+ * @brief Contém funções para exibição e manipulação do menu principal.
+ * 
+ * @see menu.c
+ */
+
 #ifndef menu_h
 #define menu_h
 

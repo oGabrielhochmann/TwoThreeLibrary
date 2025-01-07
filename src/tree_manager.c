@@ -1,10 +1,18 @@
+/**
+ * @file tree_manager.c
+ * 
+ * @brief Contém funções para gerenciamento da arvore 2-3.
+ * 
+ * Este arquivo contém funções para gerenciamento da arvore 2-3, como busca, inserção e remoção de chaves.
+ * 
+ * @see tree_manager.h
+ */
+
 #include "tree_manager.h"
 #include "two_three_tree.h"
 #include "file_manager.h"
 
 #include <stdio.h>
-
-// tree operations (insert, search, remove, etc)
 
 /**
  * @brief Salva um nó no arquivo de índices.
@@ -23,6 +31,28 @@ void saveNode(FILE *indexFile, int offset, Node23 *node)
     fwrite(node, sizeof(Node23), 1, indexFile);
 }
 
+/**
+ * @brief Cria um nó 2-3 no arquivo de índices.
+ * 
+ * Esta função é responsável por criar um nó 2-3 no arquivo de índices.
+ * 
+ * @pre O arquivo de índices deve estar aberto no modo de leitura e escrita.
+ * 
+ * @post O nó 2-3 é criado no arquivo de índices.
+ * 
+ * @param indexFile Ponteiro para o arquivo de índices.
+ * @param leftKey Chave da esquerda.
+ * @param rightKey Chave da direita.
+ * @param leftBook Posição do livro (dado) da esquerda.
+ * @param rightBook Posição do livro (dado) da direita.
+ * @param leftChild Filho da esquerda.
+ * @param middleChild Filho do meio.
+ * @param rightChild Filho da direita.
+ * @param nKeys Número de chaves no nó.
+ * @param header Ponteiro para o cabeçalho do arquivo de índices.
+ * 
+ * @return Inteiro representando o deslocamento do nó no arquivo de índices.
+ */
 int createNode23(FILE *indexFile, int leftKey, int rightKey, int leftBook, int rightBook, int leftChild, int middleChild, int rightChild, int nKeys, IndexFileHeader *header)
 {
     Node23 node;
@@ -83,6 +113,10 @@ int createNode23(FILE *indexFile, int leftKey, int rightKey, int leftBook, int r
  *
  * Esta função é responsável por carregar um nó a partir de um arquivo de índices existente,
  * dado um deslocamento (offset) no arquivo.
+ * 
+ * @pre O arquivo de índices deve estar aberto no modo de leitura e escrita.
+ * 
+ * @post O nó é carregado a partir do arquivo de índices.
  *
  * @param indexFile Ponteiro para o arquivo de índices.
  * @param offset Deslocamento (offset) do nó no arquivo de índices.
@@ -106,6 +140,10 @@ Node23 loadNode23(FILE *indexFile, int offset)
  *
  * Esta função é responsável por ler o endereço da raiz da árvore 2-3 a partir do cabeçalho do arquivo de índices.
  *
+ * @pre O arquivo de índices deve estar aberto no modo de leitura e escrita.
+ * 
+ * @post O endereço da raiz da árvore 2-3 é lido a partir do cabeçalho do arquivo de índices.
+ * 
  * @param file Ponteiro para o arquivo de índices.
  *
  * @return Endereço da raiz da árvore 2-3.
@@ -125,6 +163,10 @@ int getRootAddress(FILE *file)
  * @brief Realiza a busca de um nó na árvore 2-3.
  *
  * Esta função é responsável por realizar a busca de um nó na árvore 2-3 a partir de uma chave.
+ * 
+ * @pre O arquivo de índices deve estar aberto no modo de leitura e escrita.
+ * 
+ * @post O nó é buscado na árvore 2-3 a partir da chave especificada.
  *
  * @param file Ponteiro para o arquivo de índices.
  * @param root Endereço da raiz da árvore 2-3.
@@ -164,6 +206,10 @@ int searchNode(FILE *file, int root, int key)
  * @brief Realiza a busca de uma chave na árvore 2-3.
  *
  * Esta função é responsável por realizar a busca de uma chave na árvore 2-3.
+ * 
+ * @pre O arquivo de índices deve estar aberto no modo de leitura e escrita.
+ * 
+ * @post A chave é buscada na árvore 2-3.
  *
  * @param file Ponteiro para o arquivo de índices.
  * @param key Chave a ser buscada.
@@ -186,6 +232,10 @@ int twoThreeTreeSearch(FILE *file, int key)
  * @brief Adiciona uma chave em um nó que tem 1 chave.
  *
  * Esta função é responsável por adicionar uma chave em um nó que tem espaço para 1 chave.
+ * 
+ * @pre O nó deve ter espaço para 1 chave.
+ * 
+ * @post A chave é adicionada ao nó.
  *
  * @param node Ponteiro para o nó.
  * @param key Chave a ser adicionada.
@@ -214,6 +264,10 @@ void addKeyToNodeWithOneKey(Node23 *node, int key, int bookPosition)
  * @brief Verifica se um nó é uma folha.
  *
  * Esta função é responsável por verificar se um nó é uma folha.
+ * 
+ * @pre Nenhuma.
+ * 
+ * @post Nenhuma.
  *
  * @param node Ponteiro para o nó.
  *
