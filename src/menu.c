@@ -1,9 +1,15 @@
 /**
  * @file menu.c
  * @author Gabriel Hochmann
- * 
+ *
  * @brief Contém funções para exibição e manipulação do menu principal.
- * 
+ *
+ * Este arquivo implementa as funções relacionadas à exibição do menu principal e ao tratamento das
+ * escolhas feitas pelo usuário. O menu inclui opções para diversas operações como cadastro, remoção,
+ * listagem e impressão de livros, além de submenus para manipulação de listas e quantidades. As opções
+ * são apresentadas ao usuário de forma interativa, e o programa executa as operações correspondentes
+ * com base na escolha do usuário.
+ *
  * @see menu.h
  */
 
@@ -13,16 +19,20 @@
 #include <stdio.h>
 
 /**
- * @brief Exibe uma borda para o menu.
+ * @brief Exibe uma borda formatada para o menu.
  *
- * Esta função é responsável por imprimir uma borda para o menu na tela, com um tamanho específico.
- * A borda é impressa de forma formatada, com um caractere de barra vertical no início e no final, e traços no meio.
+ * Esta função é responsável por imprimir uma borda ao redor do menu na tela. A borda é composta por barras verticais
+ * no início e no final, e traços no meio, com a largura especificada.
  *
- * @pre width deve ser maior que 2.
+ * @pre `width` deve ser maior que 2 para garantir que a borda tenha um formato válido.
  *
- * @post A borda é impressa na tela com o tamanho fornecido.
+ * @post A borda é impressa na tela com o tamanho fornecido, delimitando visualmente o menu.
  *
- * @param width Largura da borda.
+ * @param width Largura total da borda. O valor deve ser maior que 2 para garantir que haja espaço para os caracteres
+ *              da borda vertical e horizontal.
+ *
+ * @note A função assume que a largura fornecida seja suficiente para uma borda válida. Não há verificação de erro
+ *       caso `width` seja menor ou igual a 2.
  */
 static void printMenuBorder(int width)
 {
@@ -35,22 +45,27 @@ static void printMenuBorder(int width)
 }
 
 /**
- * @brief Exibe um menu com as opções disponíveis.
+ * @brief Exibe um menu com as opções disponíveis e um título.
  *
- * Esta função é responsável por imprimir o menu na tela, mostrando um título e as opções disponíveis.
- * O menu é impresso de forma formatada, com uma borda superior e inferior, e as opções numeradas.
+ * Esta função é responsável por imprimir o menu na tela de forma formatada. O menu inclui um título no topo,
+ * uma borda superior e inferior, e as opções numeradas. As opções são exibidas dentro de uma borda com a
+ * largura especificada, e cada uma é alinhada de forma apropriada.
  *
- * @pre `title` não deve ser NULL.
- * @pre `option` não deve ser NULL.
- * @pre `numOptions` deve ser maior que 0.
- * @pre `width` deve ser maior que 2.
+ * @pre `title` não deve ser NULL. O título será exibido no topo do menu.
+ * @pre `option` não deve ser NULL. O array de opções deve conter as opções a serem exibidas no menu.
+ * @pre `numOptions` deve ser maior que 0, indicando o número de opções a serem apresentadas.
+ * @pre `width` deve ser maior que 2 para garantir que a borda tenha o formato adequado.
  *
- * @post O menu é impresso na tela com as opções fornecidas, e o título aparece no topo do menu.
+ * @post O menu é impresso na tela com as opções fornecidas e um título no topo. A borda superior e inferior é
+ *       impressa e cada opção é numerada.
  *
- * @param title Título do menu.
- * @param option Array de strings com as opções disponíveis.
- * @param numOptions Número de opções disponíveis.
- * @param width Largura do menu.
+ * @param title Título do menu, que será exibido no topo.
+ * @param option Array de strings contendo as opções do menu.
+ * @param numOptions Número total de opções disponíveis no menu.
+ * @param width Largura total do menu, incluindo bordas e conteúdo.
+ *
+ * @note A largura do menu (`width`) deve ser grande o suficiente para acomodar o título e as opções. A função
+ *       não realiza validação de erro caso a largura fornecida seja inadequada.
  */
 static void displayMenu(const char *title, const char *option[], int numOptions, int width)
 {
@@ -70,15 +85,18 @@ static void displayMenu(const char *title, const char *option[], int numOptions,
 }
 
 /**
- * @brief Lê a escolha do usuário.
+ * @brief Lê a escolha do usuário a partir do menu.
  *
- * Esta função solicita ao usuário que insira uma opção de menu e retorna a opção selecionada.
- * Se a entrada for inválida, a entrada será descartada e a função retorna -1 para indicar um erro.
+ * Esta função solicita que o usuário insira uma opção de menu, aguardando uma entrada do tipo inteiro.
+ * Caso a entrada seja inválida (não um número inteiro), a função limpa o buffer de entrada e retorna -1 para
+ * indicar que houve um erro. Caso contrário, retorna a opção selecionada.
  *
  * @pre Nenhuma.
  * @post Nenhuma.
  *
- * @return A opção selecionada pelo usuário, ou -1 se a entrada for inválida.
+ * @return A opção selecionada pelo usuário. Retorna -1 se a entrada for inválida (não um número inteiro).
+ *
+ * @note Se a entrada for inválida, o buffer de entrada é limpo para evitar que a função falhe em chamadas subsequentes.
  */
 static int getMenuChoice()
 {
@@ -97,17 +115,22 @@ static int getMenuChoice()
 }
 
 /**
- * @brief Manipula o submenu de livres que está relacionada a manipulação da lista de livres.
+ * @brief Manipula o submenu de livres relacionado à manipulação da lista de registros livres.
  *
- * Este submenu oferece ao usuário três opções: sair, imprimir do arquivo de índices e imprimir do arquivo de dados.
- * O submenu permanece em execução até que o usuário escolha a opção de sair.
+ * Este submenu oferece três opções ao usuário: sair, imprimir registros do arquivo de índices
+ * e imprimir registros do arquivo de dados. O submenu continua em execução até que o usuário escolha a opção de sair.
+ * Quando o usuário seleciona uma opção válida, a ação correspondente é executada.
  *
  * @pre Nenhuma.
- * @post o submenu é exibido na tela e as opções são tratadas de acordo com a escolha do usuário.
+ * @post O submenu é exibido na tela, e as opções selecionadas pelo usuário são tratadas. O submenu é encerrado
+ *       quando o usuário escolhe a opção de sair (opção 0).
  *
  * @param Nenhum.
  *
  * @return Nenhum. A função não retorna nada.
+ *
+ * @note As opções de impressão dos arquivos de índices e dados ainda não estão implementadas e precisam
+ *       ser chamadas com funções específicas para essa tarefa.
  */
 static void handleSubMenuFreeList()
 {
@@ -141,17 +164,24 @@ static void handleSubMenuFreeList()
 }
 
 /**
- * @brief Manipula o submenu de quantidades que está relacionada a manipulação de quantidades de livros.
+ * @brief Manipula o submenu de quantidades relacionado à manipulação de quantidades de livros.
  *
- * Este submenu oferece ao usuário cinco opções: sair, total de livros diferentes, total de livros em estoque, total de livros por autor, total de livros por editora e total de livros por ano de lançamento.
- * O submenu permanece em execução até que o usuário escolha a opção de sair.
+ * Este submenu oferece ao usuário seis opções: sair, total de livros diferentes,
+ * total de livros em estoque, total de livros por autor, total de livros por editora
+ * e total de livros por ano de lançamento. O submenu permanece em execução até que o
+ * usuário escolha a opção de sair. Quando o usuário escolhe uma opção, a função correspondente
+ * será chamada para realizar o cálculo ou operação desejada.
  *
  * @pre Nenhuma.
- * @post o submenu é exibido na tela e as opções são tratadas de acordo com a escolha do usuário.
+ * @post O submenu é exibido na tela e as opções selecionadas pelo usuário são tratadas adequadamente.
+ *       O submenu é encerrado quando o usuário escolhe a opção de sair (opção 0).
  *
  * @param Nenhum.
  *
  * @return Nenhum. A função não retorna nada.
+ *
+ * @note As opções de cálculo dos totais de livros, por autor, editora, etc., ainda precisam ser implementadas.
+ *       Cada uma delas deve ser associada a uma função específica para realizar os cálculos desejados.
  */
 static void handleSubMenuQuantities()
 {
@@ -199,14 +229,21 @@ static void handleSubMenuQuantities()
 /**
  * @brief Exibe o menu principal e manipula as escolhas do usuário.
  *
- * Esta função exibe o menu principal com as opções principais de operações, incluindo cadastro, remoção, impressão e listagem de livros, etc.
- * O menu principal permanece em execução até que o usuário escolha a opção de sair.
+ * Esta função exibe o menu principal com várias opções de operações relacionadas ao cadastro,
+ * remoção, impressão e listagem de livros, bem como outras funcionalidades, como cálculos e
+ * operações em lote. O menu principal permanece em execução até que o usuário escolha a opção de sair.
+ * O menu oferece opções para acessar submenus relacionados à manipulação de livros e de listas.
  *
  * @pre Nenhuma.
  * @post O menu principal é exibido na tela e as opções são tratadas de acordo com a escolha do usuário.
+ *       O submenu é chamado conforme a seleção do usuário, ou a operação correspondente é executada.
  *
  * @param Nenhum.
+ *
  * @return Nenhum. A função não retorna nada.
+ *
+ * @note As funções correspondentes para cada operação (como cadastro, remoção de livro,
+ *       e manipulação de dados) ainda precisam ser implementadas.
  */
 void handleChoice()
 {
