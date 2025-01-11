@@ -1112,3 +1112,74 @@ int removeKey(FILE *indexFile, int key, IndexFileHeader *header)
 
     return 0; // Sucesso
 }
+
+/**
+ * @brief Função recursiva para contar o número de nós em uma árvore 2-3.
+ *
+ * Esta função é chamada recursivamente para percorrer todos os nós de uma árvore 2-3 e contar a quantidade total de nós.
+ * Cada nó pode ter até três filhos, dependendo do número de chaves que ele contém.
+ * Se o nó contém uma chave, ele tem dois filhos. Se o nó contém duas chaves, ele tem três filhos.
+ *
+ * @param node O nó atual a ser contado. A função recursiva chama esta função para os filhos do nó.
+ * @param indexFile O arquivo binário onde os nós da árvore estão armazenados. Este arquivo é utilizado
+ *                  para carregar os filhos do nó, caso o nó tenha filhos.
+ *
+ * @return O número total de nós na subárvore com a raiz no nó fornecido.
+ *         Retorna 1 para o nó atual, e adiciona a contagem dos filhos (se existirem).
+ */
+static int twoThreeTreeCountNodesRec(Node23 node, FILE *indexFile)
+{
+    int count = 1; // Conta o nó atual
+
+    // Se o nó tem filhos (nKeys == 1 ou nKeys == 2), conta os filhos recursivamente
+    if (node.nKeys == 1)
+    {
+        // Conta os dois filhos
+        count += twoThreeTreeCountNodesRec(loadNode23(indexFile, node.left_child), indexFile);
+        count += twoThreeTreeCountNodesRec(loadNode23(indexFile, node.middle_child), indexFile);
+    }
+    else if (node.nKeys == 2)
+    {
+        // Conta os três filhos
+        count += twoThreeTreeCountNodesRec(loadNode23(indexFile, node.left_child), indexFile);
+        count += twoThreeTreeCountNodesRec(loadNode23(indexFile, node.middle_child), indexFile);
+        count += twoThreeTreeCountNodesRec(loadNode23(indexFile, node.right_child), indexFile);
+    }
+
+    return count;
+}
+
+/**
+ * @brief Conta o número de nós na árvore 2-3 a partir da raiz.
+ *
+ * Esta função inicializa o processo de contagem de nós de uma árvore 2-3. Ela começa recuperando o endereço do nó raiz
+ * da árvore, carregando o nó e então chamando a função recursiva `twoThreeTreeCountNodesRec` para contar os nós na árvore inteira.
+ *
+ * Se a árvore estiver vazia (raiz não encontrada ou inválida), a função retorna 0.
+ *
+ *
+ * @param indexFile O arquivo binário onde os nós da árvore estão armazenados.
+ *
+ * @return O número total de nós na árvore 2-3.
+ *         Retorna 0 se a árvore estiver vazia.
+ */
+int twoThreeTreeCountNodes(FILE *indexFile)
+{
+    // Obtém o endereço da raiz da árvore 2-3
+    int rootAddress = getRootAddress(indexFile);
+
+    // Verifica se a raiz é válida
+    if (rootAddress == -1)
+    {
+        printf("Árvore 2-3 vazia.\n");
+        return 0;
+    }
+
+    // Carrega o nó raiz da árvore usando a função loadNode23
+    Node23 root = loadNode23(indexFile, rootAddress);
+
+    // Função recursiva para contar os nós
+    int count = twoThreeTreeCountNodesRec(root, indexFile);
+
+    return count;
+}

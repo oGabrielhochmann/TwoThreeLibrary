@@ -15,11 +15,41 @@
  * @see two_three_tree.h
  */
 
-#include "file_manager.h"
 #include "book_data_file.h"
 #include "two_three_tree.h"
+#include "book.h"
+#include "file_manager.h"
+#include "book_manager.h"
+#include "utils.h"
 
 #include <errno.h>
+
+/**
+ * @brief Verifica se o arquivo está aberto corretamente.
+ *
+ * @param[in] arquivo Ponteiro para o arquivo a ser verificado.
+ * @param[in] nomeArquivo Nome do arquivo (usado para a mensagem de erro).
+ *
+ * @return Retorna `1` se o arquivo estiver aberto corretamente; caso contrário, retorna `0`.
+ *
+ * @pre O ponteiro `arquivo` deve ser válido e ter sido previamente aberto com uma função como `fopen()`.
+ *      Caso o ponteiro seja `NULL`, o arquivo não foi aberto corretamente e a função retornará `0`.
+ *
+ * @post Se o ponteiro `arquivo` for válido, a função retorna `1`, indicando que o arquivo foi aberto corretamente.
+ *       Caso contrário, retorna `0` e imprime uma mensagem de erro para `stderr`, indicando qual arquivo não foi aberto corretamente.
+ *
+ * @details Esta função é útil para validar se qualquer tipo de arquivo foi aberto corretamente antes de realizar operações de leitura ou escrita.
+ *          A validação é essencial para evitar falhas de execução ao tentar acessar um arquivo inexistente ou mal aberto.
+ */
+static int verifyFile(FILE *arquivo, const char *nomeArquivo)
+{
+    if (arquivo == NULL)
+    {
+        fprintf(stderr, "Erro: O arquivo '%s' não está aberto corretamente!\n", nomeArquivo);
+        return 0;
+    }
+    return 1;
+}
 
 /**
  * @brief Abre um arquivo no modo especificado.
@@ -43,10 +73,8 @@ FILE *openFile(const char *filename, const char *mode)
 {
     FILE *file = fopen(filename, mode);
 
-    if (!file)
+    if (!validarArquivo(filename, "Arquivo"))
     {
-        fprintf(stderr, "Error, opening file: %s\n", filename);
-        perror("Details");
         return NULL;
     }
 
@@ -187,7 +215,7 @@ int readFileHeader(FILE *file, void *header, size_t headerSize)
  *
  * @note A função assume que o arquivo foi aberto corretamente em modo de escrita binária antes de ser chamada.
  *       O cabeçalho será escrito a partir do início do arquivo.
- * 
+ *
  * @warning Não há verificação de erros durante a escrita do cabeçalho. É importante garantir que o arquivo esteja
  *          corretamente aberto e pronto para gravação antes de chamar a função.
  */
@@ -198,4 +226,46 @@ void saveHeader(FILE *file, void *header, size_t headerSize)
 
     // Escreve o cabeçalho no arquivo
     fwrite(header, headerSize, 1, file);
+}
+
+void loadTextFile(const char *textFilename, const char *indexFilename, const char *dataFilename)
+{
+    FILE *textFile = openFile(textFilename, "r");
+    FILE *indexFile = openFile(indexFilename, "wb");
+    FILE *dataFile = openFile(dataFilename, "wb");
+
+    if (!verifyFile(textFile, "Arquivo texto") || !verifyFile(indexFile, "Arquivo de Indices") || !verifyFile(dataFile, "Arquivo de Dados"))
+    {
+        closeFile(&textFile);
+        closeFile(&indexFile);
+        closeFile(&dataFile);
+        return;
+    }
+
+    Book book;
+    char line[1024];
+
+    while (fgets(line, sizeof(line), textFile))
+    {
+        // Remove a nova linha do final da string, se existir
+        line[strcspn(line, "\n")] = '\0';
+
+        if (strlen(line) > sizeof(line) - 1)
+        {
+            fprintf(stderr, "Erro: Linha muito longa no arquivo de texto.\n");
+            break;
+        }
+
+        // Processa a linha e extrai dados do livro
+        extractBookFromLine(line, &book);
+
+        // Adiciona o livro ao arquivo binário
+        addBook(dataFile, indexFile, &book);
+    }
+
+    closeFile(&textFile);
+    closeFile(&indexFile);
+    closeFile(&dataFile);
+
+    printf("Arquivo carregado com sucesso!\n");
 }

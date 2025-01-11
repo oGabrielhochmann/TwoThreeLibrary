@@ -12,7 +12,6 @@
 #ifndef BOOK_MANAGER_H
 #define BOOK_MANAGER_H
 
-// Declaração das funções para gerenciar a lógica dos livros.
-// Exemplos de operações: buscar por autor, calcular o total de livros, adicionar/remover livros, etc.
+#include "book.h"
 
 #endif /* BOOK_MANAGER_H */

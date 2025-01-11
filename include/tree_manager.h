@@ -162,4 +162,19 @@ int insertKey(FILE *indexFile, int key, int bookPosition, IndexFileHeader *heade
  */
 int removeKey(FILE *indexFile, int key, IndexFileHeader *header);
 
+/**
+ * @brief Conta o número de nós na árvore 2-3 a partir da raiz.
+ *
+ * Esta função inicializa o processo de contagem de nós de uma árvore 2-3. Ela começa recuperando o endereço do nó raiz
+ * da árvore, carregando o nó e então chamando a função recursiva `twoThreeTreeCountNodesRec` para contar os nós na árvore inteira.
+ *
+ * Se a árvore estiver vazia (raiz não encontrada ou inválida), a função retorna 0.
+ *
+ * @param indexFile O arquivo binário onde os nós da árvore estão armazenados.
+ *
+ * @return O número total de nós na árvore 2-3.
+ *         Retorna 0 se a árvore estiver vazia.
+ */
+int twoThreeTreeCountNodes(FILE *indexFile);
+
 #endif /* TREE_MANAGER_H */
